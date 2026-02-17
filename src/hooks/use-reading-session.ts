@@ -26,6 +26,9 @@ export function useReadingSession(postSlug: string, postId: string) {
   const scrollDepthRef = useRef<number>(0);
   const lastUpdateRef = useRef<number>(Date.now());
   const updateTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimeRef = useRef<number>(Date.now());
+  const timeSpentRef = useRef<number>(0);
+  const hasSentDataRef = useRef<boolean>(false);
 
   // Initialize session ID
   useEffect(() => {
@@ -59,9 +62,11 @@ export function useReadingSession(postSlug: string, postId: string) {
     const now = Date.now();
     const elapsed = now - lastUpdateRef.current;
     
+    timeSpentRef.current += elapsed;
+    
     setSessionData((prev) => ({
       ...prev,
-      timeSpent: prev.timeSpent + elapsed,
+      timeSpent: timeSpentRef.current,
     }));
     
     lastUpdateRef.current = now;
@@ -119,21 +124,24 @@ export function useReadingSession(postSlug: string, postId: string) {
 
   // Send tracking data to API
   const sendTrackingData = useCallback(async () => {
-    if (hasOptedOutOfTracking() || !sessionIdRef.current) {
+    if (hasOptedOutOfTracking() || !sessionIdRef.current || hasSentDataRef.current) {
       return;
     }
 
+    // Mark as sent to prevent duplicate sends
+    hasSentDataRef.current = true;
+
     // Final update before sending
-    updateTimeSpent();
-    updateScrollDepth();
+    const now = Date.now();
+    const finalTimeSpent = timeSpentRef.current + (now - lastUpdateRef.current);
 
     const data = {
-      postId: sessionData.postId,
-      postSlug: sessionData.postSlug,
+      postId,
+      postSlug,
       sessionId: sessionIdRef.current,
       userId: session?.user?.id || null,
-      startedAt: new Date(sessionData.startTime),
-      timeSpent: Math.round(sessionData.timeSpent / 1000), // Convert to seconds
+      startedAt: new Date(startTimeRef.current),
+      timeSpent: Math.round(finalTimeSpent / 1000), // Convert to seconds
       scrollDepth: scrollDepthRef.current,
       hasJavaScript: true,
     };
@@ -157,11 +165,17 @@ export function useReadingSession(postSlug: string, postId: string) {
     } catch (error) {
       console.error("Failed to send tracking data:", error);
     }
-  }, [session, sessionData, updateTimeSpent, updateScrollDepth]);
+    
+    // Reset flag after a delay to allow periodic updates
+    setTimeout(() => {
+      hasSentDataRef.current = false;
+    }, 5000);
+  }, [session?.user?.id, postId, postSlug]);
 
   // Send data on unmount or page unload
   useEffect(() => {
     const handleBeforeUnload = () => {
+      hasSentDataRef.current = false; // Allow final send
       sendTrackingData();
     };
 
@@ -169,19 +183,9 @@ export function useReadingSession(postSlug: string, postId: string) {
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      hasSentDataRef.current = false; // Allow final send
       sendTrackingData();
     };
-  }, [sendTrackingData]);
-
-  // Periodic updates (every 30 seconds)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!document.hidden) {
-        sendTrackingData();
-      }
-    }, 30000);
-
-    return () => clearInterval(interval);
   }, [sendTrackingData]);
 
   return {
