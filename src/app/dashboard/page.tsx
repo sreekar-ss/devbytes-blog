@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Plus, FileText, Eye, EyeOff, Pencil } from "lucide-react";
+import { Plus, FileText, Eye, EyeOff, Pencil, BarChart3, Shield } from "lucide-react";
 import { db } from "@/lib/db";
 import { posts, users } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
@@ -52,6 +52,24 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
+          <Link
+            href="/dashboard/stats"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-hover)] border border-[var(--border)] font-medium text-sm transition-colors"
+            title="My Reading Stats"
+          >
+            <BarChart3 className="w-4 h-4" />
+            My Stats
+          </Link>
+          {dbUser.role === "admin" && (
+            <Link
+              href="/dashboard/admin"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-hover)] border border-[var(--border)] font-medium text-sm transition-colors"
+              title="Admin Analytics"
+            >
+              <Shield className="w-4 h-4" />
+              Admin
+            </Link>
+          )}
           <Link
             href="/dashboard/new"
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium text-sm hover:opacity-90 transition-opacity"

@@ -8,6 +8,7 @@ import { formatDate, absoluteUrl, siteConfig } from "@/lib/utils";
 import { DifficultyBadge } from "@/components/blog/difficulty-badge";
 import { TableOfContents } from "@/components/blog/table-of-contents";
 import { ReadingProgress } from "@/components/blog/reading-progress";
+import { ReadingTracker } from "@/components/analytics/reading-tracker";
 import type { Metadata } from "next";
 
 type Props = {
@@ -86,6 +87,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <>
       <ReadingProgress />
+      <ReadingTracker postSlug={post.slug} postId={post.id} />
 
       {/* JSON-LD */}
       <script
