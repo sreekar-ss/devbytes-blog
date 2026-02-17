@@ -24,29 +24,28 @@ export default async function EditPostPage({ params }: Props) {
   const sessionUser = session.user as Record<string, unknown>;
   const githubUsername = sessionUser.githubUsername as string;
 
-  const dbUser = db
+  const dbUsers = await db
     .select()
     .from(users)
-    .where(eq(users.githubUsername, githubUsername))
-    .get();
+    .where(eq(users.githubUsername, githubUsername));
 
+  const dbUser = dbUsers[0];
   if (!dbUser) redirect("/auth/signin");
 
-  const post = db
+  const postResults = await db
     .select()
     .from(posts)
-    .where(and(eq(posts.slug, slug), eq(posts.authorId, dbUser.id)))
-    .get();
+    .where(and(eq(posts.slug, slug), eq(posts.authorId, dbUser.id)));
 
+  const post = postResults[0];
   if (!post) notFound();
 
   // Get tags for this post
-  const postTagRows = db
+  const postTagRows = await db
     .select()
     .from(postTags)
     .innerJoin(tags, eq(postTags.tagId, tags.id))
-    .where(eq(postTags.postId, post.id))
-    .all();
+    .where(eq(postTags.postId, post.id));
 
   const tagNames = postTagRows.map((pt) => pt.tags.name);
 

@@ -27,31 +27,36 @@ async function getSessionUser() {
   const sessionUser = session.user as Record<string, unknown>;
   const githubUsername = sessionUser.githubUsername as string;
 
-  const dbUser = db
+  const dbUsers = await db
     .select()
     .from(users)
-    .where(eq(users.githubUsername, githubUsername))
-    .get();
+    .where(eq(users.githubUsername, githubUsername));
 
+  const dbUser = dbUsers[0];
   if (!dbUser) throw new Error("User not found");
   return dbUser;
 }
 
-function ensureTagsExist(tagNames: string[]): string[] {
-  return tagNames.map((name) => {
+async function ensureTagsExist(tagNames: string[]): Promise<string[]> {
+  const tagIds: string[] = [];
+  for (const name of tagNames) {
     const slug = slugify(name);
-    const existing = db
+    const existingTags = await db
       .select()
       .from(tags)
-      .where(eq(tags.slug, slug))
-      .get();
+      .where(eq(tags.slug, slug));
 
-    if (existing) return existing.id;
+    const existing = existingTags[0];
 
-    const id = randomUUID();
-    db.insert(tags).values({ id, name: name.trim(), slug }).run();
-    return id;
-  });
+    if (existing) {
+      tagIds.push(existing.id);
+    } else {
+      const id = randomUUID();
+      await db.insert(tags).values({ id, name: name.trim(), slug });
+      tagIds.push(id);
+    }
+  }
+  return tagIds;
 }
 
 export async function createPost(data: PostFormData) {
@@ -61,39 +66,35 @@ export async function createPost(data: PostFormData) {
   const postId = randomUUID();
   const now = new Date();
 
-  // Check slug uniqueness
-  const existing = db
+  const existingPosts = await db
     .select()
     .from(posts)
-    .where(eq(posts.slug, slug))
-    .get();
+    .where(eq(posts.slug, slug));
 
+  const existing = existingPosts[0];
   const finalSlug = existing ? `${slug}-${Date.now()}` : slug;
 
-  db.insert(posts)
-    .values({
-      id: postId,
-      slug: finalSlug,
-      title: data.title,
-      excerpt: data.excerpt,
-      content: data.content,
-      coverImage: data.coverImage || null,
-      authorId: user.id,
-      difficulty: data.difficulty,
-      readingTime,
-      published: data.published,
-      featured: data.featured,
-      publishedAt: data.published ? now : null,
-      createdAt: now,
-      updatedAt: now,
-    })
-    .run();
+  await db.insert(posts).values({
+    id: postId,
+    slug: finalSlug,
+    title: data.title,
+    excerpt: data.excerpt,
+    content: data.content,
+    coverImage: data.coverImage || null,
+    authorId: user.id,
+    difficulty: data.difficulty,
+    readingTime,
+    published: data.published,
+    featured: data.featured,
+    publishedAt: data.published ? now : null,
+    createdAt: now,
+    updatedAt: now,
+  });
 
-  // Handle tags
   if (data.tagNames.length > 0) {
-    const tagIds = ensureTagsExist(data.tagNames);
+    const tagIds = await ensureTagsExist(data.tagNames);
     for (const tagId of tagIds) {
-      db.insert(postTags).values({ postId, tagId }).run();
+      await db.insert(postTags).values({ postId, tagId });
     }
   }
 
@@ -108,18 +109,18 @@ export async function updatePost(postId: string, data: PostFormData) {
   const readingTime = calculateReadingTime(data.content);
   const now = new Date();
 
-  // Verify ownership
-  const post = db
+  const postResults = await db
     .select()
     .from(posts)
-    .where(and(eq(posts.id, postId), eq(posts.authorId, user.id)))
-    .get();
+    .where(and(eq(posts.id, postId), eq(posts.authorId, user.id)));
 
+  const post = postResults[0];
   if (!post) throw new Error("Post not found or unauthorized");
 
   const wasPublished = post.published;
 
-  db.update(posts)
+  await db
+    .update(posts)
     .set({
       title: data.title,
       excerpt: data.excerpt,
@@ -132,16 +133,14 @@ export async function updatePost(postId: string, data: PostFormData) {
       publishedAt: data.published && !wasPublished ? now : post.publishedAt,
       updatedAt: now,
     })
-    .where(eq(posts.id, postId))
-    .run();
+    .where(eq(posts.id, postId));
 
-  // Update tags: remove old, add new
-  db.delete(postTags).where(eq(postTags.postId, postId)).run();
+  await db.delete(postTags).where(eq(postTags.postId, postId));
 
   if (data.tagNames.length > 0) {
-    const tagIds = ensureTagsExist(data.tagNames);
+    const tagIds = await ensureTagsExist(data.tagNames);
     for (const tagId of tagIds) {
-      db.insert(postTags).values({ postId, tagId }).run();
+      await db.insert(postTags).values({ postId, tagId });
     }
   }
 
@@ -155,20 +154,19 @@ export async function updatePost(postId: string, data: PostFormData) {
 export async function deletePost(postId: string) {
   const user = await getSessionUser();
 
-  const post = db
+  const postResults = await db
     .select()
     .from(posts)
-    .where(and(eq(posts.id, postId), eq(posts.authorId, user.id)))
-    .get();
+    .where(and(eq(posts.id, postId), eq(posts.authorId, user.id)));
 
+  const post = postResults[0];
   if (!post) throw new Error("Post not found or unauthorized");
 
-  db.delete(postTags).where(eq(postTags.postId, postId)).run();
-  db.delete(posts).where(eq(posts.id, postId)).run();
+  await db.delete(postTags).where(eq(postTags.postId, postId));
+  await db.delete(posts).where(eq(posts.id, postId));
 
   revalidatePath("/");
   revalidatePath("/blog");
   revalidatePath("/dashboard");
   redirect("/dashboard");
 }
-

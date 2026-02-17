@@ -21,21 +21,20 @@ export default async function DashboardPage() {
   const githubUsername = sessionUser.githubUsername as string;
 
   // Get user from DB
-  const dbUser = db
+  const dbUsers = await db
     .select()
     .from(users)
-    .where(eq(users.githubUsername, githubUsername))
-    .get();
+    .where(eq(users.githubUsername, githubUsername));
 
+  const dbUser = dbUsers[0];
   if (!dbUser) redirect("/auth/signin");
 
   // Get user's posts
-  const userPosts = db
+  const userPosts = await db
     .select()
     .from(posts)
     .where(eq(posts.authorId, dbUser.id))
-    .orderBy(desc(posts.createdAt))
-    .all();
+    .orderBy(desc(posts.createdAt));
 
   const publishedCount = userPosts.filter((p) => p.published).length;
   const draftCount = userPosts.filter((p) => !p.published).length;

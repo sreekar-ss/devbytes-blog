@@ -8,169 +8,131 @@ export type PostWithAuthor = {
   tags: (typeof tags.$inferSelect)[];
 };
 
+async function getTagsForPost(postId: string) {
+  const postTagRows = await db
+    .select()
+    .from(postTags)
+    .innerJoin(tags, eq(postTags.tagId, tags.id))
+    .where(eq(postTags.postId, postId));
+
+  return postTagRows.map((pt) => pt.tags);
+}
+
 export async function getPublishedPosts(): Promise<PostWithAuthor[]> {
-  const results = db
+  const results = await db
     .select()
     .from(posts)
     .where(eq(posts.published, true))
     .innerJoin(users, eq(posts.authorId, users.id))
-    .orderBy(desc(posts.publishedAt))
-    .all();
+    .orderBy(desc(posts.publishedAt));
 
   return Promise.all(
-    results.map(async (row) => {
-      const postTagRows = db
-        .select()
-        .from(postTags)
-        .innerJoin(tags, eq(postTags.tagId, tags.id))
-        .where(eq(postTags.postId, row.posts.id))
-        .all();
-
-      return {
-        post: row.posts,
-        author: row.users,
-        tags: postTagRows.map((pt) => pt.tags),
-      };
-    })
+    results.map(async (row) => ({
+      post: row.posts,
+      author: row.users,
+      tags: await getTagsForPost(row.posts.id),
+    }))
   );
 }
 
 export async function getFeaturedPosts(): Promise<PostWithAuthor[]> {
-  const results = db
+  const results = await db
     .select()
     .from(posts)
     .where(and(eq(posts.published, true), eq(posts.featured, true)))
     .innerJoin(users, eq(posts.authorId, users.id))
-    .orderBy(desc(posts.publishedAt))
-    .all();
+    .orderBy(desc(posts.publishedAt));
 
   return Promise.all(
-    results.map(async (row) => {
-      const postTagRows = db
-        .select()
-        .from(postTags)
-        .innerJoin(tags, eq(postTags.tagId, tags.id))
-        .where(eq(postTags.postId, row.posts.id))
-        .all();
-
-      return {
-        post: row.posts,
-        author: row.users,
-        tags: postTagRows.map((pt) => pt.tags),
-      };
-    })
+    results.map(async (row) => ({
+      post: row.posts,
+      author: row.users,
+      tags: await getTagsForPost(row.posts.id),
+    }))
   );
 }
 
 export async function getPostBySlug(
   slug: string
 ): Promise<PostWithAuthor | null> {
-  const result = db
+  const results = await db
     .select()
     .from(posts)
     .where(eq(posts.slug, slug))
-    .innerJoin(users, eq(posts.authorId, users.id))
-    .get();
+    .innerJoin(users, eq(posts.authorId, users.id));
 
+  const result = results[0];
   if (!result) return null;
-
-  const postTagRows = db
-    .select()
-    .from(postTags)
-    .innerJoin(tags, eq(postTags.tagId, tags.id))
-    .where(eq(postTags.postId, result.posts.id))
-    .all();
 
   return {
     post: result.posts,
     author: result.users,
-    tags: postTagRows.map((pt) => pt.tags),
+    tags: await getTagsForPost(result.posts.id),
   };
 }
 
 export async function getPostsByAuthor(
   githubUsername: string
 ): Promise<PostWithAuthor[]> {
-  const author = db
+  const authorResults = await db
     .select()
     .from(users)
-    .where(eq(users.githubUsername, githubUsername))
-    .get();
+    .where(eq(users.githubUsername, githubUsername));
 
+  const author = authorResults[0];
   if (!author) return [];
 
-  const results = db
+  const results = await db
     .select()
     .from(posts)
     .where(and(eq(posts.authorId, author.id), eq(posts.published, true)))
     .innerJoin(users, eq(posts.authorId, users.id))
-    .orderBy(desc(posts.publishedAt))
-    .all();
+    .orderBy(desc(posts.publishedAt));
 
   return Promise.all(
-    results.map(async (row) => {
-      const postTagRows = db
-        .select()
-        .from(postTags)
-        .innerJoin(tags, eq(postTags.tagId, tags.id))
-        .where(eq(postTags.postId, row.posts.id))
-        .all();
-
-      return {
-        post: row.posts,
-        author: row.users,
-        tags: postTagRows.map((pt) => pt.tags),
-      };
-    })
+    results.map(async (row) => ({
+      post: row.posts,
+      author: row.users,
+      tags: await getTagsForPost(row.posts.id),
+    }))
   );
 }
 
 export async function getPostsByTag(tagSlug: string): Promise<PostWithAuthor[]> {
-  const tag = db
+  const tagResults = await db
     .select()
     .from(tags)
-    .where(eq(tags.slug, tagSlug))
-    .get();
+    .where(eq(tags.slug, tagSlug));
 
+  const tag = tagResults[0];
   if (!tag) return [];
 
-  const postIds = db
+  const postIdRows = await db
     .select({ postId: postTags.postId })
     .from(postTags)
-    .where(eq(postTags.tagId, tag.id))
-    .all()
-    .map((r) => r.postId);
+    .where(eq(postTags.tagId, tag.id));
 
+  const postIds = postIdRows.map((r) => r.postId);
   if (postIds.length === 0) return [];
 
-  const results = db
+  const results = await db
     .select()
     .from(posts)
     .where(and(eq(posts.published, true), inArray(posts.id, postIds)))
     .innerJoin(users, eq(posts.authorId, users.id))
-    .orderBy(desc(posts.publishedAt))
-    .all();
+    .orderBy(desc(posts.publishedAt));
 
   return Promise.all(
-    results.map(async (row) => {
-      const postTagRows = db
-        .select()
-        .from(postTags)
-        .innerJoin(tags, eq(postTags.tagId, tags.id))
-        .where(eq(postTags.postId, row.posts.id))
-        .all();
-
-      return {
-        post: row.posts,
-        author: row.users,
-        tags: postTagRows.map((pt) => pt.tags),
-      };
-    })
+    results.map(async (row) => ({
+      post: row.posts,
+      author: row.users,
+      tags: await getTagsForPost(row.posts.id),
+    }))
   );
 }
 
 export async function searchPosts(query: string): Promise<PostWithAuthor[]> {
-  const results = db
+  const results = await db
     .select()
     .from(posts)
     .where(
@@ -180,37 +142,28 @@ export async function searchPosts(query: string): Promise<PostWithAuthor[]> {
       )
     )
     .innerJoin(users, eq(posts.authorId, users.id))
-    .orderBy(desc(posts.publishedAt))
-    .all();
+    .orderBy(desc(posts.publishedAt));
 
   return Promise.all(
-    results.map(async (row) => {
-      const postTagRows = db
-        .select()
-        .from(postTags)
-        .innerJoin(tags, eq(postTags.tagId, tags.id))
-        .where(eq(postTags.postId, row.posts.id))
-        .all();
-
-      return {
-        post: row.posts,
-        author: row.users,
-        tags: postTagRows.map((pt) => pt.tags),
-      };
-    })
+    results.map(async (row) => ({
+      post: row.posts,
+      author: row.users,
+      tags: await getTagsForPost(row.posts.id),
+    }))
   );
 }
 
 export async function getAllTags() {
-  return db.select().from(tags).all();
+  return db.select().from(tags);
 }
 
 export async function getAuthorByUsername(githubUsername: string) {
-  return db
+  const results = await db
     .select()
     .from(users)
-    .where(eq(users.githubUsername, githubUsername))
-    .get();
+    .where(eq(users.githubUsername, githubUsername));
+
+  return results[0] || undefined;
 }
 
 export async function getPostsByAuthorId(
@@ -221,29 +174,18 @@ export async function getPostsByAuthorId(
     ? eq(posts.authorId, authorId)
     : and(eq(posts.authorId, authorId), eq(posts.published, true));
 
-  const results = db
+  const results = await db
     .select()
     .from(posts)
     .where(conditions)
     .innerJoin(users, eq(posts.authorId, users.id))
-    .orderBy(desc(posts.createdAt))
-    .all();
+    .orderBy(desc(posts.createdAt));
 
   return Promise.all(
-    results.map(async (row) => {
-      const postTagRows = db
-        .select()
-        .from(postTags)
-        .innerJoin(tags, eq(postTags.tagId, tags.id))
-        .where(eq(postTags.postId, row.posts.id))
-        .all();
-
-      return {
-        post: row.posts,
-        author: row.users,
-        tags: postTagRows.map((pt) => pt.tags),
-      };
-    })
+    results.map(async (row) => ({
+      post: row.posts,
+      author: row.users,
+      tags: await getTagsForPost(row.posts.id),
+    }))
   );
 }
-

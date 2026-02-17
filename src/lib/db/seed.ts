@@ -1,47 +1,44 @@
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import Database from "better-sqlite3";
+import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./schema";
-import path from "path";
 import { randomUUID } from "crypto";
 
-const dbPath = path.join(process.cwd(), "sqlite.db");
-const sqlite = new Database(dbPath);
-sqlite.pragma("journal_mode = WAL");
-const db = drizzle(sqlite, { schema });
+const db = drizzle({
+  connection: {
+    url: process.env.TURSO_DATABASE_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN,
+  },
+  schema,
+});
 
 async function seed() {
   console.log("Seeding database...");
 
-  // Seed users
   const userId1 = randomUUID();
   const userId2 = randomUUID();
 
-  db.insert(schema.users)
-    .values([
-      {
-        id: userId1,
-        name: "Sreekar Siddula",
-        email: "sreekar@example.com",
-        image: "https://avatars.githubusercontent.com/u/1?v=4",
-        githubUsername: "sreekarsiddula",
-        bio: "Full-stack developer passionate about building modern web applications.",
-        role: "admin",
-        createdAt: new Date(),
-      },
-      {
-        id: userId2,
-        name: "Alex Dev",
-        email: "alex@example.com",
-        image: "https://avatars.githubusercontent.com/u/2?v=4",
-        githubUsername: "alexdev",
-        bio: "Backend engineer who loves distributed systems and clean code.",
-        role: "author",
-        createdAt: new Date(),
-      },
-    ])
-    .run();
+  await db.insert(schema.users).values([
+    {
+      id: userId1,
+      name: "Sreekar Siddula",
+      email: "sreekar@example.com",
+      image: "https://avatars.githubusercontent.com/u/1?v=4",
+      githubUsername: "sreekarsiddula",
+      bio: "Full-stack developer passionate about building modern web applications.",
+      role: "admin",
+      createdAt: new Date(),
+    },
+    {
+      id: userId2,
+      name: "Alex Dev",
+      email: "alex@example.com",
+      image: "https://avatars.githubusercontent.com/u/2?v=4",
+      githubUsername: "alexdev",
+      bio: "Backend engineer who loves distributed systems and clean code.",
+      role: "author",
+      createdAt: new Date(),
+    },
+  ]);
 
-  // Seed tags
   const tagIds = {
     react: randomUUID(),
     nextjs: randomUUID(),
@@ -53,35 +50,31 @@ async function seed() {
     database: randomUUID(),
   };
 
-  db.insert(schema.tags)
-    .values([
-      { id: tagIds.react, name: "React", slug: "react" },
-      { id: tagIds.nextjs, name: "Next.js", slug: "nextjs" },
-      { id: tagIds.typescript, name: "TypeScript", slug: "typescript" },
-      { id: tagIds.rust, name: "Rust", slug: "rust" },
-      { id: tagIds.webdev, name: "Web Dev", slug: "web-dev" },
-      { id: tagIds.devops, name: "DevOps", slug: "devops" },
-      { id: tagIds.ai, name: "AI/ML", slug: "ai-ml" },
-      { id: tagIds.database, name: "Databases", slug: "databases" },
-    ])
-    .run();
+  await db.insert(schema.tags).values([
+    { id: tagIds.react, name: "React", slug: "react" },
+    { id: tagIds.nextjs, name: "Next.js", slug: "nextjs" },
+    { id: tagIds.typescript, name: "TypeScript", slug: "typescript" },
+    { id: tagIds.rust, name: "Rust", slug: "rust" },
+    { id: tagIds.webdev, name: "Web Dev", slug: "web-dev" },
+    { id: tagIds.devops, name: "DevOps", slug: "devops" },
+    { id: tagIds.ai, name: "AI/ML", slug: "ai-ml" },
+    { id: tagIds.database, name: "Databases", slug: "databases" },
+  ]);
 
-  // Seed posts
   const post1Id = randomUUID();
   const post2Id = randomUUID();
   const post3Id = randomUUID();
 
   const now = new Date();
 
-  db.insert(schema.posts)
-    .values([
-      {
-        id: post1Id,
-        slug: "building-type-safe-apis-with-nextjs",
-        title: "Building Type-Safe APIs with Next.js 15 and Drizzle ORM",
-        excerpt:
-          "Learn how to build fully type-safe API routes in Next.js 15 using Drizzle ORM, from schema definition to runtime validation.",
-        content: `# Building Type-Safe APIs with Next.js 15 and Drizzle ORM
+  await db.insert(schema.posts).values([
+    {
+      id: post1Id,
+      slug: "building-type-safe-apis-with-nextjs",
+      title: "Building Type-Safe APIs with Next.js 15 and Drizzle ORM",
+      excerpt:
+        "Learn how to build fully type-safe API routes in Next.js 15 using Drizzle ORM, from schema definition to runtime validation.",
+      content: `# Building Type-Safe APIs with Next.js 15 and Drizzle ORM
 
 In the modern web development landscape, type safety isn't just a nice-to-have — it's essential. This guide walks you through building fully type-safe API routes using Next.js 15's App Router and Drizzle ORM.
 
@@ -150,22 +143,22 @@ export async function POST(request: Request) {
 ## Conclusion
 
 Type-safe APIs aren't just about preventing bugs — they're about developer experience. When your entire stack speaks the same type language, development becomes faster and more enjoyable.`,
-        authorId: userId1,
-        difficulty: "intermediate",
-        readingTime: 8,
-        published: true,
-        featured: true,
-        publishedAt: now,
-        createdAt: now,
-        updatedAt: now,
-      },
-      {
-        id: post2Id,
-        slug: "rust-for-javascript-developers",
-        title: "Rust for JavaScript Developers: A Practical Introduction",
-        excerpt:
-          "A hands-on guide to learning Rust, written specifically for developers coming from the JavaScript/TypeScript ecosystem.",
-        content: `# Rust for JavaScript Developers: A Practical Introduction
+      authorId: userId1,
+      difficulty: "intermediate",
+      readingTime: 8,
+      published: true,
+      featured: true,
+      publishedAt: now,
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: post2Id,
+      slug: "rust-for-javascript-developers",
+      title: "Rust for JavaScript Developers: A Practical Introduction",
+      excerpt:
+        "A hands-on guide to learning Rust, written specifically for developers coming from the JavaScript/TypeScript ecosystem.",
+      content: `# Rust for JavaScript Developers: A Practical Introduction
 
 If you're a JavaScript developer curious about Rust, you're in the right place. This guide maps Rust concepts to things you already know.
 
@@ -234,22 +227,22 @@ Think of it like transferring a file instead of copying it. This is how Rust avo
 ## Conclusion
 
 Rust has a steeper learning curve than JavaScript, but the payoff is enormous: zero-cost abstractions, memory safety without GC, and incredibly reliable software.`,
-        authorId: userId2,
-        difficulty: "beginner",
-        readingTime: 12,
-        published: true,
-        featured: true,
-        publishedAt: new Date(now.getTime() - 86400000),
-        createdAt: new Date(now.getTime() - 86400000),
-        updatedAt: new Date(now.getTime() - 86400000),
-      },
-      {
-        id: post3Id,
-        slug: "docker-compose-for-local-development",
-        title: "Docker Compose Patterns for Local Development",
-        excerpt:
-          "Stop fighting environment setup. Learn Docker Compose patterns that make local development reproducible and painless.",
-        content: `# Docker Compose Patterns for Local Development
+      authorId: userId2,
+      difficulty: "beginner",
+      readingTime: 12,
+      published: true,
+      featured: true,
+      publishedAt: new Date(now.getTime() - 86400000),
+      createdAt: new Date(now.getTime() - 86400000),
+      updatedAt: new Date(now.getTime() - 86400000),
+    },
+    {
+      id: post3Id,
+      slug: "docker-compose-for-local-development",
+      title: "Docker Compose Patterns for Local Development",
+      excerpt:
+        "Stop fighting environment setup. Learn Docker Compose patterns that make local development reproducible and painless.",
+      content: `# Docker Compose Patterns for Local Development
 
 Every developer has experienced it: "works on my machine." Docker Compose solves this by making your development environment reproducible.
 
@@ -345,38 +338,32 @@ app:
 ## Conclusion
 
 Docker Compose transforms local development from a setup nightmare into a single \`docker compose up\` command. Invest the time to get it right — your team will thank you.`,
-        authorId: userId1,
-        difficulty: "beginner",
-        readingTime: 6,
-        published: true,
-        featured: false,
-        publishedAt: new Date(now.getTime() - 172800000),
-        createdAt: new Date(now.getTime() - 172800000),
-        updatedAt: new Date(now.getTime() - 172800000),
-      },
-    ])
-    .run();
+      authorId: userId1,
+      difficulty: "beginner",
+      readingTime: 6,
+      published: true,
+      featured: false,
+      publishedAt: new Date(now.getTime() - 172800000),
+      createdAt: new Date(now.getTime() - 172800000),
+      updatedAt: new Date(now.getTime() - 172800000),
+    },
+  ]);
 
-  // Seed post tags
-  db.insert(schema.postTags)
-    .values([
-      { postId: post1Id, tagId: tagIds.nextjs },
-      { postId: post1Id, tagId: tagIds.typescript },
-      { postId: post1Id, tagId: tagIds.database },
-      { postId: post2Id, tagId: tagIds.rust },
-      { postId: post2Id, tagId: tagIds.webdev },
-      { postId: post3Id, tagId: tagIds.devops },
-      { postId: post3Id, tagId: tagIds.webdev },
-    ])
-    .run();
+  await db.insert(schema.postTags).values([
+    { postId: post1Id, tagId: tagIds.nextjs },
+    { postId: post1Id, tagId: tagIds.typescript },
+    { postId: post1Id, tagId: tagIds.database },
+    { postId: post2Id, tagId: tagIds.rust },
+    { postId: post2Id, tagId: tagIds.webdev },
+    { postId: post3Id, tagId: tagIds.devops },
+    { postId: post3Id, tagId: tagIds.webdev },
+  ]);
 
   console.log("Database seeded successfully!");
   console.log("  - 2 users");
   console.log("  - 3 posts");
   console.log("  - 8 tags");
   console.log("  - 7 post-tag associations");
-
-  sqlite.close();
 }
 
 seed().catch(console.error);
