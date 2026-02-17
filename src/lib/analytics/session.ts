@@ -3,16 +3,21 @@
  * Handles anonymous session IDs and IP hashing for privacy
  */
 
-import { randomUUID } from "crypto";
-
 const SESSION_STORAGE_KEY = "devbytes_session_id";
 const TRACKING_OPT_OUT_KEY = "devbytes_tracking_opt_out";
 
 /**
  * Generate a new anonymous session ID
+ * Uses browser crypto API when available, falls back to timestamp-based ID
  */
 export function generateSessionId(): string {
-  return randomUUID();
+  // Use browser crypto API if available
+  if (typeof window !== "undefined" && window.crypto?.randomUUID) {
+    return window.crypto.randomUUID();
+  }
+  
+  // Fallback for server-side or older browsers
+  return `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
 }
 
 /**
