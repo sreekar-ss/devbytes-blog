@@ -28,11 +28,11 @@ export default async function HomePage() {
             </h1>
 
             <p className="text-lg md:text-xl text-[var(--muted)] leading-relaxed mb-8 max-w-2xl animate-fade-in stagger-2">
-              if AI can build a house in seconds, the only question left for
-              the human is where to place the windows and why.{" "}
-              <span className="text-[var(--foreground)]">the vector</span> is
-              a personal archive documenting the shift from writing code to
-              directing intent.
+              AI writes the code now. the hard part is knowing{" "}
+              <span className="text-[var(--foreground)]">what to build and why.</span>{" "}
+              the vector is where I break down the architectural
+              decisions, trade-offs, and patterns that still need a
+              human behind the wheel.
             </p>
 
             <div className="flex flex-wrap gap-4 animate-fade-in stagger-3">
