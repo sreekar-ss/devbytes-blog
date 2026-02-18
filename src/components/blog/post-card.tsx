@@ -14,9 +14,8 @@ export function PostCard({
   return (
     <Link href={`/blog/${post.slug}`} className="block group">
       <article
-        className={`glass-card p-6 h-full flex flex-col ${
-          featured ? "md:flex-row md:gap-8" : ""
-        }`}
+        className={`glass-card p-6 h-full flex flex-col ${featured ? "md:flex-row md:gap-8" : ""
+          }`}
       >
         {/* Cover image for featured posts */}
         {featured && post.coverImage && (
@@ -47,9 +46,8 @@ export function PostCard({
 
           {/* Title */}
           <h3
-            className={`font-bold tracking-tight mb-2 group-hover:text-[var(--accent)] transition-colors ${
-              featured ? "text-2xl" : "text-lg"
-            }`}
+            className={`font-bold tracking-tight mb-2 group-hover:text-[var(--accent)] transition-colors ${featured ? "text-2xl" : "text-lg"
+              }`}
           >
             {post.title}
           </h3>
@@ -81,7 +79,7 @@ export function PostCard({
                 ? formatDate(post.publishedAt)
                 : formatDate(post.createdAt)}
             </span>
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1 whitespace-nowrap shrink-0">
               <Clock className="w-3.5 h-3.5" />
               {post.readingTime} min
             </span>

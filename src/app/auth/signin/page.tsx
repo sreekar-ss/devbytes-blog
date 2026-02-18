@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 import { Github } from "lucide-react";
 
 export const metadata = {
-  title: "Sign In | DevBytes",
-  description: "Sign in to DevBytes to start writing technical content.",
+  title: "sign in | the vector",
+  description: "sign in to the vector to start writing.",
 };
 
 export default async function SignInPage() {
@@ -17,12 +17,12 @@ export default async function SignInPage() {
       <div className="w-full max-w-md mx-auto px-6">
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-fuchsia-500 flex items-center justify-center">
               <span className="text-white font-mono font-bold text-lg">
                 {"</>"}
               </span>
             </div>
-            <span className="text-2xl font-bold tracking-tight">DevBytes</span>
+            <span className="text-2xl font-light tracking-tight">the vector</span>
           </div>
           <h1 className="text-3xl font-bold tracking-tight mb-3">
             Welcome back

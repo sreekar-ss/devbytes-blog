@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${author.name} - Author`,
-    description: author.bio || `Posts by ${author.name} on DevBytes.`,
+    description: author.bio || `Posts by ${author.name} on the vector.`,
   };
 }
 

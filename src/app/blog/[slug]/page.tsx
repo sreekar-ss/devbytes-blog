@@ -102,7 +102,7 @@ export default async function BlogPostPage({ params }: Props) {
           className="inline-flex items-center gap-1.5 text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to blog
+          back to blogs
         </Link>
 
         {/* Header */}

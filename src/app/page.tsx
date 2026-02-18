@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, Terminal, Cpu, Rss, Code2 } from "lucide-react";
+import { ArrowRight, Terminal, Compass, Layers, Cpu, Rss } from "lucide-react";
 import { PostCard } from "@/components/blog/post-card";
 import { getFeaturedPosts, getPublishedPosts } from "@/lib/queries";
 
 export default async function HomePage() {
   const featuredPosts = await getFeaturedPosts();
   const recentPosts = await getPublishedPosts();
-  // Show non-featured posts in the recent section
   const nonFeatured = recentPosts.filter(
     (p) => !featuredPosts.some((f) => f.post.id === p.post.id)
   );
@@ -20,31 +19,33 @@ export default async function HomePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--surface)] border border-[var(--border)] text-xs font-mono text-[var(--muted)] mb-6 animate-fade-in">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Open for contributions
+              vector_001 — now live
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 animate-fade-in stagger-1">
-              Code, Write,{" "}
-              <span className="gradient-text">Share.</span>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight mb-6 animate-fade-in stagger-1">
+              architecture over{" "}
+              <span className="gradient-text">syntax.</span>
             </h1>
 
             <p className="text-lg md:text-xl text-[var(--muted)] leading-relaxed mb-8 max-w-2xl animate-fade-in stagger-2">
-              A modern technical blog built for developers who want to share
-              knowledge. Human-readable articles with AI-friendly endpoints
-              &mdash; because content should be accessible to everyone.
+              if AI can build a house in seconds, the only question left for
+              the human is where to place the windows and why.{" "}
+              <span className="text-[var(--foreground)]">the vector</span> is
+              a personal archive documenting the shift from writing code to
+              directing intent.
             </p>
 
             <div className="flex flex-wrap gap-4 animate-fade-in stagger-3">
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-fuchsia-500 text-white font-medium hover:opacity-90 transition-opacity"
               >
-                Read the Blog
+                explore the blogs
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/llms.txt"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[var(--border)] font-semibold hover:bg-[var(--surface)] transition-colors font-mono text-sm"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-[var(--border)] font-medium hover:bg-[var(--surface)] transition-colors font-mono text-sm"
               >
                 <Terminal className="w-4 h-4" />
                 /llms.txt
@@ -54,30 +55,30 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Features Strip */}
+      {/* Content Pillars */}
       <section className="border-y border-[var(--border)] bg-[var(--surface)]/50">
         <div className="max-w-6xl mx-auto px-6 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               {
-                icon: Code2,
-                label: "Technical Deep-Dives",
-                desc: "In-depth articles",
+                icon: Compass,
+                label: "system patterns",
+                desc: "human vs. AI architecture",
               },
               {
-                icon: Terminal,
-                label: "AI-Friendly",
-                desc: "llms.txt & JSON API",
+                icon: Layers,
+                label: "the tech stack",
+                desc: "tools that amplify intent",
               },
               {
                 icon: Cpu,
-                label: "Multi-Author",
-                desc: "Collaborative writing",
+                label: "meta-dev",
+                desc: "the evolving senior engineer",
               },
               {
                 icon: Rss,
-                label: "RSS Feed",
-                desc: "Subscribe anywhere",
+                label: "AI-friendly",
+                desc: "llms.txt & structured data",
               },
             ].map((feature) => (
               <div key={feature.label} className="flex items-center gap-3">
@@ -85,7 +86,7 @@ export default async function HomePage() {
                   <feature.icon className="w-5 h-5 text-[var(--accent)]" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold">{feature.label}</p>
+                  <p className="text-sm font-medium">{feature.label}</p>
                   <p className="text-xs text-[var(--muted)]">{feature.desc}</p>
                 </div>
               </div>
@@ -99,9 +100,9 @@ export default async function HomePage() {
         <section className="max-w-6xl mx-auto px-6 py-16">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight">Featured</h2>
+              <h2 className="text-2xl font-light tracking-tight">featured</h2>
               <p className="text-[var(--muted)] text-sm mt-1">
-                Handpicked articles worth reading
+                handpicked entries worth reading
               </p>
             </div>
           </div>
@@ -118,18 +119,18 @@ export default async function HomePage() {
         <section className="max-w-6xl mx-auto px-6 pb-16">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight">
-                Recent Posts
+              <h2 className="text-2xl font-light tracking-tight">
+                recent entries
               </h2>
               <p className="text-[var(--muted)] text-sm mt-1">
-                Latest from the blog
+                latest from the blogs
               </p>
             </div>
             <Link
               href="/blog"
               className="text-sm text-[var(--accent)] hover:underline inline-flex items-center gap-1"
             >
-              View all <ArrowRight className="w-3.5 h-3.5" />
+              view all <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -140,21 +141,23 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* CTA for AI */}
+      {/* CTA — The Vector Definition */}
       <section className="border-t border-[var(--border)]">
         <div className="max-w-6xl mx-auto px-6 py-16">
           <div className="glass-card p-8 md:p-12 text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--surface)] border border-[var(--border)] text-xs font-mono text-[var(--muted)] mb-6">
               <Cpu className="w-3.5 h-3.5" />
-              Built for AI agents
+              magnitude + direction
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4">
-              AI-First Content Architecture
+            <h2 className="text-2xl md:text-3xl font-light tracking-tight mb-4">
+              AI output is magnitude.{" "}
+              <span className="gradient-text">human intent is direction.</span>
             </h2>
             <p className="text-[var(--muted)] max-w-2xl mx-auto mb-8 leading-relaxed">
-              Every article is available as structured data through our JSON
-              API, llms.txt index, and RSS feed. Built so that both humans and
-              AI agents can discover and consume our content efficiently.
+              every entry in this archive is available as structured data —
+              JSON API, llms.txt index, and RSS feed. built so that both
+              humans and AI agents can discover and consume content
+              efficiently.
             </p>
             <div className="flex flex-wrap justify-center gap-4 font-mono text-sm">
               <Link

@@ -4,8 +4,8 @@ import { getPublishedPosts, getAllTags } from "@/lib/queries";
 import { BlogFilters } from "@/components/blog/blog-filters";
 
 export const metadata = {
-  title: "Blog",
-  description: "Browse all technical articles on DevBytes.",
+  title: "blogs",
+  description: "browse all entries on the vector.",
 };
 
 export default async function BlogPage({
@@ -44,12 +44,12 @@ export default async function BlogPage({
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
       <div className="mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
-          Blog
+        <h1 className="text-3xl md:text-4xl font-light tracking-tight mb-3">
+          blogs
         </h1>
         <p className="text-[var(--muted)] text-lg">
-          Technical articles on software development, engineering practices,
-          and more.
+          entries on system architecture, intent-driven development, and the
+          evolving role of the engineer.
         </p>
       </div>
 

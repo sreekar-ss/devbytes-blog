@@ -7,7 +7,7 @@ import { StatsCard } from "@/components/analytics/stats-card";
 import { ReadingHistory } from "@/components/analytics/reading-history";
 
 export const metadata = {
-  title: "My Reading Stats | DevBytes",
+  title: "my reading stats | the vector",
   description: "View your reading statistics and history",
 };
 
@@ -29,7 +29,7 @@ export default async function StatsPage() {
         <ArrowLeft className="w-4 h-4" />
         Back to dashboard
       </Link>
-      
+
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight mb-2">
           My Reading Stats

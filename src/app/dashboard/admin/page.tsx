@@ -6,7 +6,7 @@ import { StatsCard } from "@/components/analytics/stats-card";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Admin Analytics | DevBytes",
+  title: "admin analytics | the vector",
   description: "Site-wide analytics and insights",
 };
 
@@ -39,7 +39,7 @@ export default async function AdminAnalyticsPage() {
         <ArrowLeft className="w-4 h-4" />
         Back to dashboard
       </Link>
-      
+
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight mb-2">
           Admin Analytics
@@ -94,7 +94,7 @@ export default async function AdminAnalyticsPage() {
                 const avgTime = post.totalTime && post.views
                   ? Math.round(Number(post.totalTime) / Number(post.views))
                   : 0;
-                
+
                 return (
                   <tr key={post.postId} className="hover:bg-[var(--surface)] transition-colors">
                     <td className="px-6 py-4">

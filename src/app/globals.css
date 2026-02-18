@@ -10,9 +10,9 @@
   --card: #f9fafb;
   --card-hover: #f3f4f6;
   --card-border: #e5e7eb;
-  --accent: #3b82f6;
-  --accent-secondary: #8b5cf6;
-  --accent-gradient: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  --accent: #2563eb;
+  --accent-secondary: #d946ef;
+  --accent-gradient: linear-gradient(135deg, #2563eb, #a855f7, #d946ef);
   --surface: #f3f4f6;
   --surface-hover: #e5e7eb;
   --border: #e5e7eb;
@@ -33,9 +33,9 @@
   --card: #18181b;
   --card-hover: #27272a;
   --card-border: #27272a;
-  --accent: #60a5fa;
-  --accent-secondary: #a78bfa;
-  --accent-gradient: linear-gradient(135deg, #60a5fa, #a78bfa);
+  --accent: #3b82f6;
+  --accent-secondary: #e879f9;
+  --accent-gradient: linear-gradient(135deg, #3b82f6, #c084fc, #e879f9);
   --surface: #18181b;
   --surface-hover: #27272a;
   --border: #27272a;
@@ -133,16 +133,17 @@ body {
 
 .prose-content h1 {
   font-size: 2.25rem;
-  font-weight: 800;
+  font-weight: 500;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
   letter-spacing: -0.025em;
   line-height: 1.2;
+  text-transform: none;
 }
 
 .prose-content h2 {
   font-size: 1.625rem;
-  font-weight: 600;
+  font-weight: 400;
   margin-top: 2rem;
   margin-bottom: 0.75rem;
   letter-spacing: -0.015em;
@@ -150,22 +151,25 @@ body {
   padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border);
   color: var(--foreground);
+  text-transform: none;
 }
 
 .prose-content h3 {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 400;
   margin-top: 1.75rem;
   margin-bottom: 0.5rem;
   line-height: 1.4;
   color: var(--foreground);
+  text-transform: none;
 }
 
 .prose-content h4, .prose-content h5, .prose-content h6 {
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: 400;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
+  text-transform: none;
 }
 
 .prose-content p {

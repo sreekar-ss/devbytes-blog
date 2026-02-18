@@ -53,9 +53,9 @@ export function absoluteUrl(path: string): string {
 }
 
 export const siteConfig = {
-  name: process.env.NEXT_PUBLIC_SITE_NAME || "DevBytes",
+  name: process.env.NEXT_PUBLIC_SITE_NAME || "the vector",
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
-    "A modern technical blog for developers, by developers.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+    "architecture over syntax. a personal archive documenting the shift from writing code to directing intent.",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://thevector.dev",
 };

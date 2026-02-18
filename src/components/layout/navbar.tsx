@@ -13,8 +13,8 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const links = [
-    { href: "/", label: "Home" },
-    { href: "/blog", label: "Blog" },
+    { href: "/", label: "home" },
+    { href: "/blog", label: "blogs" },
   ];
 
   return (
@@ -22,12 +22,12 @@ export function Navbar() {
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center transition-transform group-hover:scale-110">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-fuchsia-500 flex items-center justify-center transition-transform group-hover:scale-110">
             <span className="text-white font-mono font-bold text-sm">
               {"</>"}
             </span>
           </div>
-          <span className="text-lg font-bold tracking-tight">DevBytes</span>
+          <span className="text-lg font-light tracking-tight">the vector</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -36,11 +36,10 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                pathname === link.href
-                  ? "bg-[var(--surface)] text-[var(--foreground)]"
-                  : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)]"
-              }`}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === link.href
+                ? "bg-[var(--surface)] text-[var(--foreground)]"
+                : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)]"
+                }`}
             >
               {link.label}
             </Link>
@@ -53,16 +52,16 @@ export function Navbar() {
           {session ? (
             <Link
               href="/dashboard"
-              className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 transition-opacity"
+              className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-blue-600 to-fuchsia-500 text-white hover:opacity-90 transition-opacity"
             >
-              Dashboard
+              dashboard
             </Link>
           ) : (
             <Link
               href="/auth/signin"
               className="px-4 py-2 rounded-lg text-sm font-medium text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
             >
-              Sign in
+              sign in
             </Link>
           )}
         </div>
@@ -84,11 +83,10 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               onClick={() => setMobileOpen(false)}
-              className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                pathname === link.href
-                  ? "bg-[var(--surface)] text-[var(--foreground)]"
-                  : "text-[var(--muted)] hover:text-[var(--foreground)]"
-              }`}
+              className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${pathname === link.href
+                ? "bg-[var(--surface)] text-[var(--foreground)]"
+                : "text-[var(--muted)] hover:text-[var(--foreground)]"
+                }`}
             >
               {link.label}
             </Link>
@@ -99,9 +97,9 @@ export function Navbar() {
               <Link
                 href="/dashboard"
                 onClick={() => setMobileOpen(false)}
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-blue-600 to-fuchsia-500 text-white"
               >
-                Dashboard
+                dashboard
               </Link>
             ) : (
               <Link
@@ -109,7 +107,7 @@ export function Navbar() {
                 onClick={() => setMobileOpen(false)}
                 className="text-sm text-[var(--muted)] hover:text-[var(--foreground)]"
               >
-                Sign in
+                sign in
               </Link>
             )}
           </div>
@@ -118,4 +116,3 @@ export function Navbar() {
     </nav>
   );
 }
-
