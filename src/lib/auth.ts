@@ -47,13 +47,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           createdAt: new Date(),
         });
       } else {
-        await db
-          .update(users)
-          .set({
-            name: user.name || existingUser.name,
-            image: user.image || existingUser.image,
-          })
-          .where(eq(users.githubUsername, githubUsername));
+        // Only update name/image if user hasn't customized them
+        const updates: Record<string, string | null> = {};
+        if (!existingUser.name || existingUser.name === existingUser.githubUsername) {
+          updates.name = user.name || existingUser.name;
+        }
+        if (!existingUser.image) {
+          updates.image = user.image || existingUser.image;
+        }
+        if (Object.keys(updates).length > 0) {
+          await db
+            .update(users)
+            .set(updates)
+            .where(eq(users.githubUsername, githubUsername));
+        }
       }
 
       return true;

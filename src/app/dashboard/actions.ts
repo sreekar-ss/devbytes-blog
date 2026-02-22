@@ -170,3 +170,33 @@ export async function deletePost(postId: string) {
   revalidatePath("/dashboard");
   redirect("/dashboard");
 }
+
+export async function updateProfile(data: {
+  name: string;
+  image?: string;
+  bio?: string;
+}) {
+  const user = await getSessionUser();
+
+  const name = data.name.trim();
+  if (!name || name.length > 100) {
+    throw new Error("Name is required and must be under 100 characters.");
+  }
+
+  const bio = data.bio?.trim() || null;
+  if (bio && bio.length > 500) {
+    throw new Error("Bio must be under 500 characters.");
+  }
+
+  const image = data.image?.trim() || null;
+
+  await db
+    .update(users)
+    .set({ name, image, bio })
+    .where(eq(users.id, user.id));
+
+  revalidatePath("/");
+  revalidatePath("/blog");
+  revalidatePath("/dashboard");
+  revalidatePath(`/authors/${user.githubUsername}`);
+}

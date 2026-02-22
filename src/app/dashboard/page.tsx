@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Plus, FileText, Eye, EyeOff, Pencil, BarChart3, Shield } from "lucide-react";
+import { Plus, FileText, Eye, EyeOff, Pencil, BarChart3, Shield, UserCircle } from "lucide-react";
 import { db } from "@/lib/db";
 import { posts, users } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
@@ -52,6 +52,14 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
+          <Link
+            href="/dashboard/profile"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-hover)] border border-[var(--border)] font-medium text-sm transition-colors"
+            title="Edit Profile"
+          >
+            <UserCircle className="w-4 h-4" />
+            Profile
+          </Link>
           <Link
             href="/dashboard/stats"
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--surface)] hover:bg-[var(--surface-hover)] border border-[var(--border)] font-medium text-sm transition-colors"

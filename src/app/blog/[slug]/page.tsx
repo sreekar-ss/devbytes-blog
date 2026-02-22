@@ -9,6 +9,7 @@ import { DifficultyBadge } from "@/components/blog/difficulty-badge";
 import { TableOfContents } from "@/components/blog/table-of-contents";
 import { ReadingProgress } from "@/components/blog/reading-progress";
 import { ReadingTracker } from "@/components/analytics/reading-tracker";
+import { AuthorCard } from "@/components/blog/author-card";
 import type { Metadata } from "next";
 
 type Props = {
@@ -167,7 +168,10 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Content + TOC layout */}
         <div className="flex gap-12">
           {/* Main content */}
-          <div className="flex-1 max-w-3xl prose-content">{content}</div>
+          <div className="flex-1 max-w-3xl prose-content">
+            {content}
+            <AuthorCard author={author} />
+          </div>
 
           {/* Sidebar TOC - desktop only */}
           {headings.length > 2 && (
