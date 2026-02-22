@@ -53,7 +53,7 @@ export function PostCard({
           </h3>
 
           {/* Excerpt */}
-          <p className="text-[var(--muted)] text-sm leading-relaxed mb-4 flex-1">
+          <p className="text-[var(--muted)] text-sm leading-relaxed mb-4 flex-1 line-clamp-3">
             {post.excerpt}
           </p>
 
