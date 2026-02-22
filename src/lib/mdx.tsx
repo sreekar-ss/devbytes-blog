@@ -2,6 +2,16 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypePrettyCode from "rehype-pretty-code";
+import type { Options } from "rehype-pretty-code";
+
+const prettyCodeOptions: Options = {
+  theme: {
+    dark: "github-dark",
+    light: "github-light",
+  },
+  keepBackground: true,
+};
 
 export async function renderMDX(source: string) {
   const { content } = await compileMDX({
@@ -12,16 +22,17 @@ export async function renderMDX(source: string) {
         rehypePlugins: [
           rehypeSlug,
           [rehypeAutolinkHeadings, { behavior: "wrap" }],
+          [rehypePrettyCode, prettyCodeOptions],
         ],
       },
     },
     components: {
       pre: (props: React.ComponentProps<"pre">) => {
-        return <pre className="overflow-x-auto rounded-xl border border-[var(--border)] bg-[var(--code-bg)] p-5 my-6 text-sm leading-7 font-mono" {...props} />;
+        return <pre className="overflow-x-auto rounded-xl p-4 my-6 text-sm leading-7 font-mono" {...props} />;
       },
-      code: (props: React.ComponentProps<"code"> & { className?: string }) => {
-        const isInline = !props.className;
-        if (isInline) {
+      code: (props: React.ComponentProps<"code"> & { className?: string; "data-language"?: string }) => {
+        const isBlock = props.className || props["data-language"];
+        if (!isBlock) {
           return <code className="bg-[var(--surface)] border border-[var(--border)] rounded-md px-1.5 py-0.5 text-[0.875em] font-mono font-medium" {...props} />;
         }
         return <code {...props} />;

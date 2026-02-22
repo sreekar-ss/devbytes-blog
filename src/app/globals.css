@@ -300,16 +300,13 @@ body {
   z-index: 10;
 }
 
-/* Shiki dual themes */
-.shiki,
-.shiki span {
-  color: var(--shiki-light) !important;
-  background-color: var(--shiki-light-bg) !important;
+/* Shiki dual themes — rehype-pretty-code sets inline CSS vars on each span */
+pre[data-theme] code span {
+  color: var(--shiki-dark);
+  background-color: transparent;
 }
 
-.dark .shiki,
-.dark .shiki span {
-  color: var(--shiki-dark) !important;
+pre[data-theme] {
   background-color: var(--shiki-dark-bg) !important;
 }
 
