@@ -310,6 +310,96 @@ pre[data-theme] {
   background-color: var(--shiki-dark-bg) !important;
 }
 
+/* ===== Footnotes / References ===== */
+
+/* Superscript reference numbers in the article body */
+.prose-content a[data-footnote-ref] {
+  font-size: 0.75em;
+  vertical-align: super;
+  line-height: 0;
+  text-decoration: none;
+  color: var(--accent);
+  font-weight: 600;
+  padding: 0 2px;
+  transition: opacity 0.2s;
+}
+
+.prose-content a[data-footnote-ref]::before {
+  content: "[";
+}
+
+.prose-content a[data-footnote-ref]::after {
+  content: "]";
+}
+
+.prose-content a[data-footnote-ref]:hover {
+  opacity: 0.7;
+}
+
+/* References section at the bottom */
+.prose-content section[data-footnotes] {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.prose-content section[data-footnotes]::before {
+  content: "References";
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--foreground);
+  margin-bottom: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.prose-content section[data-footnotes]>h2 {
+  display: none;
+}
+
+.prose-content section[data-footnotes] ol {
+  padding-left: 1.5rem;
+  list-style-type: decimal;
+}
+
+.prose-content section[data-footnotes] li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.prose-content section[data-footnotes] li p {
+  display: inline;
+  margin: 0;
+}
+
+/* Break long URLs in references */
+.prose-content section[data-footnotes] a {
+  color: var(--accent);
+  word-break: break-all;
+}
+
+/* Back-to-reference arrow */
+.prose-content a[data-footnote-backref] {
+  font-size: 0.85em;
+  text-decoration: none;
+  margin-left: 4px;
+  color: var(--accent);
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.prose-content a[data-footnote-backref]:hover {
+  opacity: 1;
+}
+
+/* Smooth scroll for footnote navigation */
+html {
+  scroll-behavior: smooth;
+}
+
 /* ===== Scrollbar ===== */
 ::-webkit-scrollbar {
   width: 8px;
