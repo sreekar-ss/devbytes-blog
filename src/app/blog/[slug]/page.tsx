@@ -96,7 +96,7 @@ export default async function BlogPostPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <article className="max-w-6xl mx-auto px-6 py-12">
+      <article className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Back link */}
         <Link
           href="/blog"
@@ -168,7 +168,7 @@ export default async function BlogPostPage({ params }: Props) {
         {/* Content + TOC layout */}
         <div className="flex gap-12">
           {/* Main content */}
-          <div className="flex-1 max-w-3xl prose-content">
+          <div className="flex-1 max-w-3xl min-w-0 prose-content">
             {content}
             <AuthorCard author={author} />
           </div>
