@@ -19,28 +19,29 @@ export default async function HomePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--surface)] border border-[var(--border)] text-xs font-mono text-[var(--muted)] mb-6 animate-fade-in">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              vector_001 — now live
+              Vector_001 — now live
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight mb-6 animate-fade-in stagger-1">
-              architecture over{" "}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight mb-6 animate-fade-in stagger-1">
+              Architecture over{" "}
               <span className="gradient-text">syntax.</span>
             </h1>
 
             <p className="text-lg md:text-xl text-[var(--muted)] leading-relaxed mb-8 max-w-2xl animate-fade-in stagger-2">
-              AI writes the code now. the hard part is knowing{" "}
-              <span className="text-[var(--foreground)]">what to build and why.</span>{" "}
-              the vector is where I break down the architectural
-              decisions, trade-offs, and patterns that still need a
-              human behind the wheel.
+              The Vector is a personal, non-profit archive exploring the shift
+              from writing code to directing intent. In an era where AI handles
+              the how, we must master the{" "}
+              <span className="text-[var(--foreground)] font-medium">why</span>{" "}
+              — structural integrity, trade-offs, and architectural decisions
+              that still need a human behind the wheel.
             </p>
 
             <div className="flex flex-wrap gap-4 animate-fade-in stagger-3">
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-fuchsia-500 text-white font-medium hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-fuchsia-500 text-white font-semibold hover:opacity-90 transition-opacity"
               >
-                explore the blogs
+                Explore the archive
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
@@ -55,6 +56,46 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Manifesto */}
+      <section className="border-b border-[var(--border)]">
+        <div className="max-w-6xl mx-auto px-6 py-16 md:py-20">
+          <div className="max-w-3xl space-y-12">
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-[var(--foreground)] mb-4">
+                The philosophy
+              </h2>
+              <p className="text-[var(--muted)] leading-relaxed text-lg">
+                Code is becoming a commodity. As syntax becomes automated, the
+                value of the software engineer shifts upward. It moves away from
+                the lines of code and toward the structural integrity of the
+                system.
+              </p>
+            </div>
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-[var(--foreground)] mb-4">
+                Defining the vector
+              </h2>
+              <p className="text-[var(--muted)] leading-relaxed text-lg">
+                A vector is magnitude and direction. In software, magnitude is
+                the raw power of our tools — the scale of AI-generated output.
+                Direction is the human element: the intentionality behind every
+                component, every interface, and every data flow.
+              </p>
+            </div>
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-[var(--foreground)] mb-4">
+                The archive
+              </h2>
+              <p className="text-[var(--muted)] leading-relaxed text-lg">
+                This space serves as a personal repository of thoughts on
+                high-level system design, the ethics of automated development,
+                and the enduring importance of architectural intent.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Content Pillars */}
       <section className="border-y border-[var(--border)] bg-[var(--surface)]/50">
         <div className="max-w-6xl mx-auto px-6 py-6">
@@ -62,23 +103,23 @@ export default async function HomePage() {
             {[
               {
                 icon: Compass,
-                label: "system patterns",
-                desc: "human vs. AI architecture",
+                label: "System patterns",
+                desc: "Human vs. AI architecture",
               },
               {
                 icon: Layers,
-                label: "the tech stack",
-                desc: "tools that amplify intent",
+                label: "The tech stack",
+                desc: "Tools that amplify intent",
               },
               {
                 icon: Cpu,
-                label: "meta-dev",
-                desc: "the evolving senior engineer",
+                label: "Meta-development",
+                desc: "The evolving senior engineer",
               },
               {
                 icon: Rss,
                 label: "AI-friendly",
-                desc: "llms.txt & structured data",
+                desc: "llms.txt and structured data",
               },
             ].map((feature) => (
               <div key={feature.label} className="flex items-center gap-3">
@@ -86,7 +127,7 @@ export default async function HomePage() {
                   <feature.icon className="w-5 h-5 text-[var(--accent)]" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium">{feature.label}</p>
+                  <p className="text-sm font-semibold">{feature.label}</p>
                   <p className="text-xs text-[var(--muted)]">{feature.desc}</p>
                 </div>
               </div>
@@ -100,9 +141,9 @@ export default async function HomePage() {
         <section className="max-w-6xl mx-auto px-6 py-16">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-light tracking-tight">featured</h2>
+              <h2 className="text-2xl font-semibold tracking-tight">Featured</h2>
               <p className="text-[var(--muted)] text-sm mt-1">
-                handpicked entries worth reading
+                Handpicked entries worth reading
               </p>
             </div>
           </div>
@@ -119,18 +160,18 @@ export default async function HomePage() {
         <section className="max-w-6xl mx-auto px-6 pb-16">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-light tracking-tight">
-                recent entries
+              <h2 className="text-2xl font-semibold tracking-tight">
+                Recent entries
               </h2>
               <p className="text-[var(--muted)] text-sm mt-1">
-                latest from the blogs
+                Latest from the archive
               </p>
             </div>
             <Link
               href="/blog"
               className="text-sm text-[var(--accent)] hover:underline inline-flex items-center gap-1"
             >
-              view all <ArrowRight className="w-3.5 h-3.5" />
+              View all <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -147,17 +188,16 @@ export default async function HomePage() {
           <div className="glass-card p-8 md:p-12 text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--surface)] border border-[var(--border)] text-xs font-mono text-[var(--muted)] mb-6">
               <Cpu className="w-3.5 h-3.5" />
-              magnitude + direction
+              Magnitude + direction
             </div>
-            <h2 className="text-2xl md:text-3xl font-light tracking-tight mb-4">
+            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-4">
               AI output is magnitude.{" "}
-              <span className="gradient-text">human intent is direction.</span>
+              <span className="gradient-text">Human intent is direction.</span>
             </h2>
             <p className="text-[var(--muted)] max-w-2xl mx-auto mb-8 leading-relaxed">
-              every entry in this archive is available as structured data —
-              JSON API, llms.txt index, and RSS feed. built so that both
-              humans and AI agents can discover and consume content
-              efficiently.
+              Every entry in this archive is also available as structured data —
+              JSON API, llms.txt, and RSS — so humans and AI agents can discover
+              and consume content efficiently.
             </p>
             <div className="flex flex-wrap justify-center gap-4 font-mono text-sm">
               <Link

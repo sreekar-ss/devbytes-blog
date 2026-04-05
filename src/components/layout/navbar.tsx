@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { ThemeToggle } from "./theme-toggle";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { siteConfig } from "@/lib/utils";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -13,8 +14,8 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const links = [
-    { href: "/", label: "home" },
-    { href: "/blog", label: "blogs" },
+    { href: "/", label: "Home" },
+    { href: "/blog", label: "Blog" },
   ];
 
   return (
@@ -27,7 +28,9 @@ export function Navbar() {
               {"</>"}
             </span>
           </div>
-          <span className="text-lg font-light tracking-tight">the vector</span>
+          <span className="text-lg font-medium tracking-tight">
+            {siteConfig.name}
+          </span>
         </Link>
 
         {/* Desktop Nav */}
@@ -36,7 +39,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${pathname === link.href
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${pathname === link.href
                 ? "bg-[var(--surface)] text-[var(--foreground)]"
                 : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)]"
                 }`}
@@ -52,16 +55,16 @@ export function Navbar() {
           {session ? (
             <Link
               href="/dashboard"
-              className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-blue-600 to-fuchsia-500 text-white hover:opacity-90 transition-opacity"
+              className="px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-blue-600 to-fuchsia-500 text-white hover:opacity-90 transition-opacity"
             >
-              dashboard
+              Dashboard
             </Link>
           ) : (
             <Link
               href="/auth/signin"
-              className="px-4 py-2 rounded-lg text-sm font-medium text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-semibold text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
             >
-              sign in
+              Sign in
             </Link>
           )}
         </div>
@@ -83,7 +86,7 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               onClick={() => setMobileOpen(false)}
-              className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${pathname === link.href
+              className={`block px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors ${pathname === link.href
                 ? "bg-[var(--surface)] text-[var(--foreground)]"
                 : "text-[var(--muted)] hover:text-[var(--foreground)]"
                 }`}
@@ -97,17 +100,17 @@ export function Navbar() {
               <Link
                 href="/dashboard"
                 onClick={() => setMobileOpen(false)}
-                className="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-blue-600 to-fuchsia-500 text-white"
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-blue-600 to-fuchsia-500 text-white"
               >
-                dashboard
+                Dashboard
               </Link>
             ) : (
               <Link
                 href="/auth/signin"
                 onClick={() => setMobileOpen(false)}
-                className="text-sm text-[var(--muted)] hover:text-[var(--foreground)]"
+                className="text-sm font-semibold text-[var(--muted)] hover:text-[var(--foreground)]"
               >
-                sign in
+                Sign in
               </Link>
             )}
           </div>

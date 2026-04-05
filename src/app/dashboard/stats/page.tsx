@@ -7,7 +7,7 @@ import { StatsCard } from "@/components/analytics/stats-card";
 import { ReadingHistory } from "@/components/analytics/reading-history";
 
 export const metadata = {
-  title: "my reading stats | the vector",
+  title: "My reading stats",
   description: "View your reading statistics and history",
 };
 

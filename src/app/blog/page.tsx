@@ -2,10 +2,11 @@ import { Suspense } from "react";
 import { PostCard } from "@/components/blog/post-card";
 import { getPublishedPosts, getAllTags } from "@/lib/queries";
 import { BlogFilters } from "@/components/blog/blog-filters";
+import { siteConfig } from "@/lib/utils";
 
 export const metadata = {
-  title: "blogs",
-  description: "browse all entries on the vector.",
+  title: "Blog",
+  description: `Browse all entries on ${siteConfig.name}.`,
 };
 
 export default async function BlogPage({
@@ -44,11 +45,11 @@ export default async function BlogPage({
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
       <div className="mb-10">
-        <h1 className="text-3xl md:text-4xl font-light tracking-tight mb-3">
-          blogs
+        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">
+          Blog
         </h1>
         <p className="text-[var(--muted)] text-lg">
-          entries on system architecture, intent-driven development, and the
+          Entries on system architecture, intent-driven development, and the
           evolving role of the engineer.
         </p>
       </div>

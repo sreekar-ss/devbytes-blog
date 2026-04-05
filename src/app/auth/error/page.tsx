@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "auth error | the vector",
+  title: "Authentication error",
 };
 
 export default function AuthErrorPage() {

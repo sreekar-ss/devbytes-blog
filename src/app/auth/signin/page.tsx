@@ -2,10 +2,11 @@ import { signIn } from "@/lib/auth";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Github } from "lucide-react";
+import { siteConfig } from "@/lib/utils";
 
 export const metadata = {
-  title: "sign in | the vector",
-  description: "sign in to the vector to start writing.",
+  title: "Sign in",
+  description: `Sign in to ${siteConfig.name} to start writing.`,
 };
 
 export default async function SignInPage() {
@@ -22,7 +23,9 @@ export default async function SignInPage() {
                 {"</>"}
               </span>
             </div>
-            <span className="text-2xl font-light tracking-tight">the vector</span>
+            <span className="text-2xl font-medium tracking-tight">
+              {siteConfig.name}
+            </span>
           </div>
           <h1 className="text-3xl font-bold tracking-tight mb-3">
             Welcome back

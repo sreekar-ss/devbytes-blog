@@ -8,7 +8,7 @@ import Link from "next/link";
 import { ProfileForm } from "@/components/dashboard/profile-form";
 
 export const metadata = {
-    title: "edit profile | the vector",
+    title: "Edit profile",
 };
 
 export default async function ProfilePage() {
@@ -33,7 +33,7 @@ export default async function ProfilePage() {
                 className="inline-flex items-center gap-1.5 text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors mb-8"
             >
                 <ArrowLeft className="w-4 h-4" />
-                back to dashboard
+                Back to dashboard
             </Link>
 
             <h1 className="text-2xl md:text-3xl font-light tracking-tight mb-2">

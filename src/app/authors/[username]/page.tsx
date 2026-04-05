@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Github, User } from "lucide-react";
 import { getAuthorByUsername, getPostsByAuthor } from "@/lib/queries";
 import { PostCard } from "@/components/blog/post-card";
+import { siteConfig } from "@/lib/utils";
 import type { Metadata } from "next";
 
 type Props = {
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${author.name} - Author`,
-    description: author.bio || `Posts by ${author.name} on the vector.`,
+    description: author.bio || `Posts by ${author.name} on ${siteConfig.name}.`,
   };
 }
 

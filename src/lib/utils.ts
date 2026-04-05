@@ -53,9 +53,9 @@ export function absoluteUrl(path: string): string {
 }
 
 export const siteConfig = {
-  name: process.env.NEXT_PUBLIC_SITE_NAME || "the vector",
+  name: process.env.NEXT_PUBLIC_SITE_NAME || "The Vector",
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
-    "architecture over syntax. a personal archive documenting the shift from writing code to directing intent.",
+    "Architecture over syntax. A personal archive on architectural intent and human direction in the age of AI.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://thevector.dev",
 };

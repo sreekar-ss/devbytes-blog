@@ -6,7 +6,7 @@ import { StatsCard } from "@/components/analytics/stats-card";
 import Link from "next/link";
 
 export const metadata = {
-  title: "admin analytics | the vector",
+  title: "Admin analytics",
   description: "Site-wide analytics and insights",
 };
 
